@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: penguin-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: penguin-app
+  template:
+    metadata:
+      labels:
+        app: penguin-app
+    spec:
+      containers:
+        - name: penguin-app
+          image: penguin-app:E029
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8501
+            - containerPort: 8001
+          readinessProbe:
+            httpGet:
+              path: /_stcore/health
+              port: 8501
+            initialDelaySeconds: 10
+            periodSeconds: 5
